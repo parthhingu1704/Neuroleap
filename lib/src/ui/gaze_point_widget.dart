@@ -11,19 +11,27 @@ class GazePointWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final consumer = Provider.of<GazeTrackerProvider>(context);
-    final startFocusProvide = Provider.of<StartFocusProvider>(context);
-    startFocusProvide.onsetEyesDXDY(consumer.pointX - circleSize / 2.0, consumer.pointY - circleSize / 2.0);
+    // final consumer = Provider.of<GazeTrackerProvider>(context);
+    // final startFocusProvide = Provider.of<StartFocusProvider>(context);
+    // 
+    return Consumer<GazeTrackerProvider>(
+      // create:(context) =>  GazeTrackerProvider(),
 
-    return Positioned(
-      left: consumer.pointX - circleSize / 2.0,
-      top: consumer.pointY - circleSize / 2.0,
-      child: Container(
-        width: circleSize,
-        height: circleSize,
-        decoration:
-            const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-      ),
+      builder: (context,consumer,child) {
+        // final data =context.read<GazeTrackerProvider>().;
+    // data.onsetEyesDXDY(consumer.pointX - circleSize / 2.0, consumer.pointY - circleSize / 2.0);
+
+        return Positioned(
+          left: consumer.pointX - circleSize / 2.0,
+          top: consumer.pointY - circleSize / 2.0,
+          child: Container(
+            width: circleSize,
+            height: circleSize,
+            decoration:
+                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+          ),
+        );
+      }
     );
   }
 }

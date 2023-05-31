@@ -9,6 +9,7 @@ import 'package:test_flutter/src/provider/user_extand_provider.dart';
 import 'package:test_flutter/src/ui/calibration_widget.dart';
 
 import 'package:test_flutter/src/ui/camera_handle_widget.dart';
+import 'package:test_flutter/src/ui/drawer_page.dart';
 import 'package:test_flutter/src/ui/gaze_point_widget.dart';
 import 'package:test_flutter/src/ui/initialized_fail_dialog_widget.dart';
 import 'package:test_flutter/src/ui/initializing_widget.dart';
@@ -28,16 +29,20 @@ class SampleApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
         home: MultiProvider(providers: [
-      ChangeNotifierProvider(
+      ChangeNotifierProvider<GazeTrackerProvider>(
           create: (BuildContext context) => GazeTrackerProvider(),),
-      ChangeNotifierProvider(
+      ChangeNotifierProvider<UserExtandProvider>(
           create: (BuildContext context) => UserExtandProvider(),),
-           ChangeNotifierProvider(
+           ChangeNotifierProvider<StartFocusProvider>(
           create: (BuildContext context) => StartFocusProvider(),)
     ], child: const AppView(),),);
   }
 }
+// import 'dart:math';
 
+// /// check if a [point] is in a circle of a given [radius]
+// bool isPointInside(Offset point, double radius) =>
+//   pow(point.dx, 2) + pow(point.dy, 2) < pow(radius, 2);
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
   @override
@@ -45,50 +50,67 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
+  GlobalKey<ScaffoldState> keyData =GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     final consumer = Provider.of<GazeTrackerProvider>(context);
-    return Consumer<GazeTrackerProvider>(
-        builder: (context, gazetracker, child) {
-      return Stack(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top:16.0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const TitleWidget(),
-                  Consumer<GazeTrackerProvider>(
-                    builder: (context, gazetracker, child) {
-                      switch (gazetracker.state) {
-                        case GazeTrackerState.first:
-                          return const CameraHandleWidget();
-                        case GazeTrackerState.idle:
-                          return const InitializingWidget();
-                        case GazeTrackerState.initialized:
-                          return const InitializedWidget();
-                        case GazeTrackerState.start:
-                        case GazeTrackerState.calibrating:
-                          return const TrackingModeWidget();
-                        default:
-                          return const InitializingWidget();
-                      }
-                    },
-                  ),
-                ],
+    return 
+     Consumer<GazeTrackerProvider>(
+          builder: (context, gazetracker, child) {
+        return Scaffold(
+            key: keyData,
+      backgroundColor: Colors.black,
+      drawer: const DrawerPage(),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              //  SizedBox(height:,),
+              Padding(
+                padding:  EdgeInsets.only(top:MediaQuery.of(context).padding.top+8,left: 8),
+                child: TextButton(onPressed: () {
+                  keyData.currentState!.openDrawer();
+                }, child:const Icon(Icons.menu,color: Colors.white,)),
               ),
-            ),
+              const TitleWidget(),
+
+              Expanded(
+                child: Stack(
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Consumer<GazeTrackerProvider>(
+                          builder: (context, gazetracker, child) {
+                            switch (gazetracker.state) {
+                              case GazeTrackerState.first:
+                                return const CameraHandleWidget();
+                              case GazeTrackerState.idle:
+                                return const InitializingWidget();
+                              case GazeTrackerState.initialized:
+                                return const InitializedWidget();
+                              case GazeTrackerState.start:
+                              case GazeTrackerState.calibrating:
+                                return const TrackingModeWidget();
+                              default:
+                                return const InitializingWidget();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    if (consumer.state == GazeTrackerState.start) const GazePointWidget(),
+                    if (consumer.state == GazeTrackerState.initializing)
+                      const LoadingCircleWidget(),
+                    if (consumer.state == GazeTrackerState.calibrating)
+                      const CalibrationWidget(),
+                    if (consumer.failedReason != null) const InitializedFailDialog()
+                  ],
+                ),
+              ),
+            ],
           ),
-          if (consumer.state == GazeTrackerState.start) const GazePointWidget(),
-          if (consumer.state == GazeTrackerState.initializing)
-            const LoadingCircleWidget(),
-          if (consumer.state == GazeTrackerState.calibrating)
-            const CalibrationWidget(),
-          if (consumer.failedReason != null) const InitializedFailDialog()
-        ],
-      );
-    },);
+        );
+      },
+    );
   }
 }
