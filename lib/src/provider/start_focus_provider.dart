@@ -1,39 +1,43 @@
 import 'dart:async';
-
 import 'package:flutter/widgets.dart';
 
 class StartFocusProvider extends ChangeNotifier {
-  double x = 0.0;
-  double y = 0.0;
-  double edx = 0.0;
-  double edy = 0.0;
-  int currentSeconds = 0;
+  String timeString = "00:00";
+  Stopwatch stopwatch = Stopwatch();
+  Timer? timer;
 
-  void onsetdxdyBoxCordinate(double xdata, double yData) {
-    x = xdata;
-    y = yData;
-    notifyListeners();
-    print(x);
-    print(y);
+  void isInside(int circlex, int circley, int rad, int x, int y) {
+    if ((x - circlex) * (x - circlex) + (y - circley) * (y - circley) <=
+        rad * rad) {
+      start();
+    } else {
+      stop();
+    }
   }
 
-  void onsetEyesDXDY(double dx, double dy) {
-    edx = dx;
-    edy = dy;
-    print('edx$edx');
-    print('edy$edy');
+  void start() {
+    stopwatch.start();
+    timer = Timer.periodic(const Duration(seconds: 1), update);
   }
 
-  void getStartingTimer(BuildContext context) {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (x == edx && y == edy) {
-        currentSeconds = timer.tick;
-        notifyListeners();
-      } else {
-        timer.cancel();
-        currentSeconds = 0;
-      }
-    });
-    notifyListeners();
+  void update(Timer t) {
+    if (stopwatch.isRunning) {
+      timeString =
+          (stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
+              ":" +
+              (stopwatch.elapsed.inSeconds % 60).toString().padLeft(2, "0");
+    }
+  }
+
+  void stop() {
+    timer?.cancel();
+    stopwatch.stop();
+  }
+
+  void reset() {
+    timer?.cancel();
+    stopwatch.reset();
+    timeString = "00:00";
+    stopwatch.stop();
   }
 }

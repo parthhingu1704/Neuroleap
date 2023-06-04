@@ -9,33 +9,35 @@ class InitializedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final consumer = Provider.of<GazeTrackerProvider>(context);
-    return Column(
-      children: <Widget>[
-        const DeinitModeWidget(),
-       
-        const  Padding(
-          padding:  EdgeInsets.only(bottom:16.0,top: 16),
-          child:  Text('Now You can track you gaze!',
-              style: TextStyle(
-                  color: Colors.white24,
-                  fontSize: 10,
-                  decoration: TextDecoration.none)),
-        ),
-
-        Container(
-          width: double.maxFinite,
-          color: Colors.white12,
-          child: TextButton(
-              onPressed: () {
-                consumer.startTracking();
-              },
-              child: const Text(
-                'Start Tracking',
-                style: TextStyle(color: Colors.white),
-              )),
-        ),
-      ],
+    // final consumer = Provider.of<GazeTrackerProvider>(context);
+    return ChangeNotifierProvider(
+      create: (context) => GazeTrackerProvider(),
+      child: Column(
+        children: <Widget>[
+          const DeinitModeWidget(),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 16.0, top: 16),
+            child: Text('Now You can track you gaze!',
+                style: TextStyle(
+                    color: Colors.white24,
+                    fontSize: 10,
+                    decoration: TextDecoration.none)),
+          ),
+          Container(
+            width: double.maxFinite,
+            color: Colors.white12,
+            child: TextButton(
+                onPressed: () {
+                  Provider.of<GazeTrackerProvider>(context, listen: false)
+                      .startTracking();
+                },
+                child: const Text(
+                  'Start Tracking',
+                  style: TextStyle(color: Colors.white),
+                )),
+          ),
+        ],
+      ),
     );
   }
 }

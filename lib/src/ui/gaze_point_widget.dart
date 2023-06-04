@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:test_flutter/src/provider/gaze_tracker_provider.dart';
-import 'package:test_flutter/src/provider/start_focus_provider.dart';
 
 class GazePointWidget extends StatelessWidget {
   static const circleSize = 40.0;

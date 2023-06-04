@@ -16,7 +16,7 @@ class _DrawerPageState extends State<DrawerPage> {
       width: 250,
       color: Theme.of(context).cardColor,
       child: Padding(
-        padding:  EdgeInsets.only(top:MediaQuery.of(context).padding.top+16),
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -27,14 +27,33 @@ class _DrawerPageState extends State<DrawerPage> {
               color: Theme.of(context).dividerColor,
               thickness: 1,
             ),
-      TextButton(onPressed: () {
-        
-        Navigator.push(context, MaterialPageRoute(builder: (context) => StartFocusTestCase(),),
-        );
-      },child: Text('Test Case 1 (Eye Focus)',style: TextStyle(fontSize: 16),),),
-TextButton(onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => UserSatatusWidget(),));
-      },child: Text('Test Case 2 (Blink)',style: TextStyle(fontSize: 16),),),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const StartFocusTestCase(),
+                  ),
+                );
+              },
+              child: const Text(
+                'Test Case 1 (Eye Focus)',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserSatatusWidget(),
+                    ));
+              },
+              child: const Text(
+                'Test Case 2 (Blink)',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
           ],
         ),
       ),

@@ -7,7 +7,6 @@ import 'package:test_flutter/src/model/gazetracker_method_string.dart';
 
 class GazeTrackerProvider with ChangeNotifier {
   dynamic state;
-  
   static const licenseKey =
       'dev_f2y6mohfezaam7kjbpneu3njrufamzokqjub69an'; // Please enter the key value for development issued by the SeeSo.io
   final _channel = const MethodChannel('samples.flutter.dev/tracker');
@@ -134,7 +133,6 @@ class GazeTrackerProvider with ChangeNotifier {
     pointX = x;
     pointY = y;
     notifyListeners();
-
   }
 
   void _getInitializedResult(dynamic result) {
@@ -163,18 +161,16 @@ class GazeTrackerProvider with ChangeNotifier {
   }
 
   Future<void> initGazeTracker() async {
-    try {
-       _setTrackerState(GazeTrackerState.initializing);
-    await _channel.invokeMethod(
+    failedReason = null;
+    _setTrackerState(GazeTrackerState.initializing);
+    final String result = await _channel.invokeMethod(
         MethodString.initGazeTracker.convertedText, {
       'license': licenseKey,
       'useStatusOption': isUserOption ? "true" : "false"
     });
+    debugPrint('result : $result');
+    changeUserStatusOption(true);
     notifyListeners();
-    } catch (e) {
-      print(e.toString());
-    }
-   
   }
 
   void deinitGazeTracker() {
@@ -191,6 +187,7 @@ class GazeTrackerProvider with ChangeNotifier {
   void stopTracking() {
     _channel.invokeMethod(MethodString.stopTracking.convertedText);
     showTestTestButton = 0;
+
     notifyListeners();
   }
 

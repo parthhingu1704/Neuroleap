@@ -19,7 +19,17 @@ import 'package:test_flutter/src/ui/initialized_widget.dart';
 import 'package:test_flutter/src/ui/tracking_mode_widget.dart';
 
 void main() {
-  runApp(const SampleApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<GazeTrackerProvider>(
+      create: (BuildContext context) => GazeTrackerProvider(),
+    ),
+    ChangeNotifierProvider<UserExtandProvider>(
+      create: (BuildContext context) => UserExtandProvider(),
+    ),
+    ChangeNotifierProvider<StartFocusProvider>(
+      create: (BuildContext context) => StartFocusProvider(),
+    )
+  ], child: const SampleApp()));
 }
 
 class SampleApp extends StatelessWidget {
@@ -28,14 +38,8 @@ class SampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-        home: MultiProvider(providers: [
-      ChangeNotifierProvider<GazeTrackerProvider>(
-          create: (BuildContext context) => GazeTrackerProvider(),),
-      ChangeNotifierProvider<UserExtandProvider>(
-          create: (BuildContext context) => UserExtandProvider(),),
-           ChangeNotifierProvider<StartFocusProvider>(
-          create: (BuildContext context) => StartFocusProvider(),)
-    ], child: const AppView(),),);
+      home: const AppView(),
+    );
   }
 }
 // import 'dart:math';
@@ -50,38 +54,45 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  GlobalKey<ScaffoldState> keyData =GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> keyData = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    final consumer = Provider.of<GazeTrackerProvider>(context);
-    return 
-     Consumer<GazeTrackerProvider>(
-          builder: (context, gazetracker, child) {
+    // final consumer = Provider.of<GazeTrackerProvider>(context);
+    return ChangeNotifierProvider<GazeTrackerProvider>(
+      create: (context) => GazeTrackerProvider(),
+      builder: (context, child) {
+        final consumer = context.watch<GazeTrackerProvider>();
         return Scaffold(
-            key: keyData,
-      backgroundColor: Colors.black,
-      drawer: const DrawerPage(),
+          key: keyData,
+          backgroundColor: Colors.black,
+          drawer: const DrawerPage(),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //  SizedBox(height:,),
               Padding(
-                padding:  EdgeInsets.only(top:MediaQuery.of(context).padding.top+8,left: 8),
-                child: TextButton(onPressed: () {
-                  keyData.currentState!.openDrawer();
-                }, child:const Icon(Icons.menu,color: Colors.white,)),
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).padding.top + 8, left: 8),
+                child: TextButton(
+                    onPressed: () {
+                      keyData.currentState!.openDrawer();
+                    },
+                    child: const Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                    )),
               ),
               const TitleWidget(),
-
               Expanded(
                 child: Stack(
                   children: <Widget>[
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Consumer<GazeTrackerProvider>(
-                          builder: (context, gazetracker, child) {
-                            switch (gazetracker.state) {
+                        Builder(
+                          builder: (
+                            context,
+                          ) {
+                            switch (consumer.state) {
                               case GazeTrackerState.first:
                                 return const CameraHandleWidget();
                               case GazeTrackerState.idle:
@@ -98,12 +109,14 @@ class _AppViewState extends State<AppView> {
                         ),
                       ],
                     ),
-                    if (consumer.state == GazeTrackerState.start) const GazePointWidget(),
+                    if (consumer.state == GazeTrackerState.start)
+                      const GazePointWidget(),
                     if (consumer.state == GazeTrackerState.initializing)
                       const LoadingCircleWidget(),
                     if (consumer.state == GazeTrackerState.calibrating)
                       const CalibrationWidget(),
-                    if (consumer.failedReason != null) const InitializedFailDialog()
+                    if (consumer.failedReason != null)
+                      const InitializedFailDialog()
                   ],
                 ),
               ),
