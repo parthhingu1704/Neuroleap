@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:test_flutter/src/provider/gaze_tracker_provider.dart';
+
 
 class InitializingWidget extends StatelessWidget {
   const InitializingWidget({Key? key}) : super(key: key);
@@ -8,8 +9,8 @@ class InitializingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final consumer = Provider.of<GazeTrackerProvider>(context);
-    return Consumer<GazeTrackerProvider>(
-        builder: (context, gazeTracker, child) {
+    return GetBuilder<GazeTrackerProvider>(
+        builder: (controller) {
       return Column(
         children: <Widget>[
           const Text('You need to init GazeTracker first',
@@ -25,7 +26,7 @@ class InitializingWidget extends StatelessWidget {
             color: Colors.white12,
             child: TextButton(
                 onPressed: () {
-                  gazeTracker.initGazeTracker();
+                  controller.initGazeTracker();
                 },
                 child: const Text(
                   'Initialize   GazzeTracker',

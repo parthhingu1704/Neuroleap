@@ -1,52 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:test_flutter/src/provider/gaze_tracker_provider.dart';
-
+import 'package:get/get.dart';
 import 'package:test_flutter/src/model/app_stage.dart';
+import 'package:test_flutter/src/provider/gaze_tracker_provider.dart';
 import 'package:test_flutter/src/provider/start_focus_provider.dart';
 import 'package:test_flutter/src/provider/user_extand_provider.dart';
 import 'package:test_flutter/src/ui/calibration_widget.dart';
-
 import 'package:test_flutter/src/ui/camera_handle_widget.dart';
 import 'package:test_flutter/src/ui/drawer_page.dart';
 import 'package:test_flutter/src/ui/gaze_point_widget.dart';
 import 'package:test_flutter/src/ui/initialized_fail_dialog_widget.dart';
+import 'package:test_flutter/src/ui/initialized_widget.dart';
 import 'package:test_flutter/src/ui/initializing_widget.dart';
 import 'package:test_flutter/src/ui/loading_circle_widget.dart';
 import 'package:test_flutter/src/ui/title_widget.dart';
-import 'package:test_flutter/src/ui/initialized_widget.dart';
 import 'package:test_flutter/src/ui/tracking_mode_widget.dart';
 
 void main() {
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<GazeTrackerProvider>(
-      create: (BuildContext context) => GazeTrackerProvider(),
-    ),
-    ChangeNotifierProvider<UserExtandProvider>(
-      create: (BuildContext context) => UserExtandProvider(),
-    ),
-    ChangeNotifierProvider<StartFocusProvider>(
-      create: (BuildContext context) => StartFocusProvider(),
-    )
-  ], child: const SampleApp()));
+  runApp(const SampleApp());
+}
+
+class AppBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put<GazeTrackerProvider>(GazeTrackerProvider());
+    Get.put<StartFocusProvider>(StartFocusProvider());
+    Get.put<UserExtandProvider>(UserExtandProvider());
+  }
 }
 
 class SampleApp extends StatelessWidget {
   const SampleApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: const AppView(),
+      initialBinding: AppBinding(),
     );
   }
 }
-// import 'dart:math';
 
-// /// check if a [point] is in a circle of a given [radius]
-// bool isPointInside(Offset point, double radius) =>
-//   pow(point.dx, 2) + pow(point.dy, 2) < pow(radius, 2);
 class AppView extends StatefulWidget {
   const AppView({Key? key}) : super(key: key);
   @override
@@ -58,10 +51,8 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     // final consumer = Provider.of<GazeTrackerProvider>(context);
-    return ChangeNotifierProvider<GazeTrackerProvider>(
-      create: (context) => GazeTrackerProvider(),
-      builder: (context, child) {
-        final consumer = context.watch<GazeTrackerProvider>();
+    return GetBuilder<GazeTrackerProvider>(
+      builder: (controller) {
         return Scaffold(
           key: keyData,
           backgroundColor: Colors.black,
@@ -89,10 +80,8 @@ class _AppViewState extends State<AppView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Builder(
-                          builder: (
-                            context,
-                          ) {
-                            switch (consumer.state) {
+                          builder: (context) {
+                            switch (controller.state) {
                               case GazeTrackerState.first:
                                 return const CameraHandleWidget();
                               case GazeTrackerState.idle:
@@ -109,13 +98,13 @@ class _AppViewState extends State<AppView> {
                         ),
                       ],
                     ),
-                    if (consumer.state == GazeTrackerState.start)
+                    if (controller.state == GazeTrackerState.start)
                       const GazePointWidget(),
-                    if (consumer.state == GazeTrackerState.initializing)
+                    if (controller.state == GazeTrackerState.initializing)
                       const LoadingCircleWidget(),
-                    if (consumer.state == GazeTrackerState.calibrating)
+                    if (controller.state == GazeTrackerState.calibrating)
                       const CalibrationWidget(),
-                    if (consumer.failedReason != null)
+                    if (controller.failedReason != null)
                       const InitializedFailDialog()
                   ],
                 ),

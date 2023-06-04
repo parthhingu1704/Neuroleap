@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
-class StartFocusProvider extends ChangeNotifier {
+class StartFocusProvider extends GetxController {
   String timeString = "00:00";
   Stopwatch stopwatch = Stopwatch();
   Timer? timer;
@@ -17,10 +17,10 @@ class StartFocusProvider extends ChangeNotifier {
 
   void start() {
     stopwatch.start();
-    timer = Timer.periodic(const Duration(seconds: 1), update);
+    timer = Timer.periodic(const Duration(seconds: 1), updater);
   }
 
-  void update(Timer t) {
+  void updater(Timer t) {
     if (stopwatch.isRunning) {
       timeString =
           (stopwatch.elapsed.inMinutes % 60).toString().padLeft(2, "0") +
@@ -39,5 +39,9 @@ class StartFocusProvider extends ChangeNotifier {
     stopwatch.reset();
     timeString = "00:00";
     stopwatch.stop();
+  }
+
+  void _stateUpdate() {
+    update();
   }
 }

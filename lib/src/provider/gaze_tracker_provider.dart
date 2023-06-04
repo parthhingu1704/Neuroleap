@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 // ignore: depend_on_referenced_packages
 import 'package:permission_handler/permission_handler.dart';
 import 'package:test_flutter/src/model/app_stage.dart';
 import 'package:test_flutter/src/model/gazetracker_method_string.dart';
 
-class GazeTrackerProvider with ChangeNotifier {
+class GazeTrackerProvider extends GetxController {
   dynamic state;
   static const licenseKey =
       'dev_f2y6mohfezaam7kjbpneu3njrufamzokqjub69an'; // Please enter the key value for development issued by the SeeSo.io
@@ -69,18 +70,18 @@ class GazeTrackerProvider with ChangeNotifier {
 
   void changeUserStatusOption(bool isOption) {
     isUserOption = isOption;
-    notifyListeners();
+    _stateUpdate();
   }
 
   void changeCalibrationType(int cType) {
     calibrationType = cType;
-    notifyListeners();
+    _stateUpdate();
   }
 
   void _onAttentions(dynamic result) {
     if (state != GazeTrackerState.calibrating) {
       attention = result[0];
-      notifyListeners();
+      _stateUpdate();
     }
   }
 
@@ -88,7 +89,7 @@ class GazeTrackerProvider with ChangeNotifier {
     if (state != GazeTrackerState.calibrating) {
       isDrowsiness = result[0];
       debugPrint(isDrowsiness.toString());
-      notifyListeners();
+      _stateUpdate();
     }
   }
 
@@ -96,7 +97,7 @@ class GazeTrackerProvider with ChangeNotifier {
     if (state != GazeTrackerState.calibrating) {
       isBlink = reuslt[0];
       debugPrint(isBlink.toString());
-      notifyListeners();
+      _stateUpdate();
     }
   }
 
@@ -114,13 +115,13 @@ class GazeTrackerProvider with ChangeNotifier {
     }
     caliX = result[0];
     caliY = result[1];
-    notifyListeners();
+    _stateUpdate();
     _channel.invokeMethod(MethodString.startCollectSamples.convertedText);
   }
 
   void _onCalibrationProgress(dynamic result) {
     progress = result[0];
-    notifyListeners();
+    _stateUpdate();
   }
 
   void _onCalibrationFinished() {
@@ -132,7 +133,7 @@ class GazeTrackerProvider with ChangeNotifier {
     debugPrint("gaze x : $x, y: $y");
     pointX = x;
     pointY = y;
-    notifyListeners();
+    _stateUpdate();
   }
 
   void _getInitializedResult(dynamic result) {
@@ -141,7 +142,7 @@ class GazeTrackerProvider with ChangeNotifier {
       _setTrackerState(GazeTrackerState.initialized);
     } else {
       failedReason = "Init Failed error code ${result[1]}";
-      notifyListeners();
+      _stateUpdate();
     }
   }
 
@@ -170,7 +171,7 @@ class GazeTrackerProvider with ChangeNotifier {
     });
     debugPrint('result : $result');
     changeUserStatusOption(true);
-    notifyListeners();
+    _stateUpdate();
   }
 
   void deinitGazeTracker() {
@@ -181,35 +182,40 @@ class GazeTrackerProvider with ChangeNotifier {
   void startTracking() {
     _channel.invokeMethod(MethodString.startTracking.convertedText);
 
-    notifyListeners();
+    _stateUpdate();
   }
 
   void stopTracking() {
     _channel.invokeMethod(MethodString.stopTracking.convertedText);
     showTestTestButton = 0;
 
-    notifyListeners();
+    _stateUpdate();
   }
 
   void _setTrackerState(GazeTrackerState state) {
     this.state = state;
-    notifyListeners();
+    _stateUpdate();
   }
 
   void startCalibration() {
     _channel.invokeMethod(
         MethodString.startCalibration.convertedText, calibrationType);
+    _setTrackerState(GazeTrackerState.start);
   }
 
   void saveCalibrationData() {
     hasCaliData = false;
     savedCalibrationData = true;
     _channel.invokeMethod(MethodString.saveCalibrationData.convertedText);
-    notifyListeners();
+    _stateUpdate();
   }
 
   void chageIdleState() {
     failedReason = null;
     _setTrackerState(GazeTrackerState.idle);
+  }
+
+  void _stateUpdate() {
+    update();
   }
 }

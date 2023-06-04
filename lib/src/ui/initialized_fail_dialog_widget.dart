@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:test_flutter/src/provider/gaze_tracker_provider.dart';
 
 class InitializedFailDialog extends StatelessWidget {
@@ -7,14 +7,13 @@ class InitializedFailDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final consumer = Provider.of<GazeTrackerProvider>(context);
+    final consumer = Get.find<GazeTrackerProvider>();
     return CupertinoAlertDialog(
       title: const Text('Failed'),
-      content: Text(   
+      content: Text(
           consumer.failedReason != null ? consumer.failedReason! : "unknown"),
       actions: <CupertinoDialogAction>[
         CupertinoDialogAction(
-        
           /// This parameter indicates this action is the default,
           /// and turns the action's text to bold text.
           isDefaultAction: true,
