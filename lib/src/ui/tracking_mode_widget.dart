@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test_flutter/src/model/app_stage.dart';
 import 'package:test_flutter/src/provider/gaze_tracker_provider.dart';
 
 // import 'package:test_flutter/src/ui/start_focus_page.dart';
@@ -58,32 +60,32 @@ class TrackingModeWidget extends StatelessWidget {
               ),
             ),
 
-            // const Padding(
-            //   padding: EdgeInsets.only(bottom: 16.0, top: 16),
-            //   child: Text(
-            //       'And also you can improve accuaracy through calibration',
-            //       style: TextStyle(
-            //           color: Colors.white24,
-            //           fontSize: 10,
-            //           decoration: TextDecoration.none)),
-            // ),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 16.0, top: 16),
+              child: Text(
+                  'And also you can improve accuaracy through calibration',
+                  style: TextStyle(
+                      color: Colors.white24,
+                      fontSize: 10,
+                      decoration: TextDecoration.none)),
+            ),
 
-            // Container(
-            //   width: double.maxFinite,
-            //   color: Colors.white12,
-            //   child: TextButton(
-            //       onPressed: () {
-            //         controller.startCalibration();
-            //         //   Provider.of<GazeTrackerProvider>(context, listen: false)
-            //         //   .startCalibration();
-            //       },
-            //       child: Text(
-            //         (controller.state == GazeTrackerState.calibrating)
-            //             ? 'Calibration started!'
-            //             : 'Start Calibration',
-            //         style: const TextStyle(color: Colors.white),
-            //       )),
-            // ),
+            Container(
+              width: double.maxFinite,
+              color: Colors.white12,
+              child: TextButton(
+                  onPressed: () {
+                    controller.startCalibration();
+                    //   Provider.of<GazeTrackerProvider>(context, listen: false)
+                    //   .startCalibration();
+                  },
+                  child: Text(
+                    (controller.state == GazeTrackerState.calibrating)
+                        ? 'Calibration started!'
+                        : 'Start Calibration',
+                    style: const TextStyle(color: Colors.white),
+                  )),
+            ),
             // Container(
             //   width: double.maxFinite,
             //   height: 1,
@@ -121,9 +123,9 @@ class TrackingModeWidget extends StatelessWidget {
             //         },
             //         onValueChanged: (newValue) {
             //           debugPrint('value changed : $newValue');
-            //           consumer.changeCalibrationType(newValue as int);
+            //           controller.changeCalibrationType(newValue as int);
             //         },
-            //         groupValue: consumer.calibrationType,
+            //         groupValue: controller.calibrationType,
             //         unselectedColor: Colors.white12,
             //         selectedColor: Colors.white38,
             //         pressedColor: Colors.white38,

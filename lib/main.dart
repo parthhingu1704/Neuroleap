@@ -57,58 +57,51 @@ class _AppViewState extends State<AppView> {
           key: keyData,
           backgroundColor: Colors.black,
           drawer: const DrawerPage(),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          body: Stack(
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top + 8, left: 8),
-                child: TextButton(
-                    onPressed: () {
-                      keyData.currentState!.openDrawer();
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 8, left: 8),
+                    child: TextButton(
+                        onPressed: () {
+                          keyData.currentState!.openDrawer();
+                        },
+                        child: const Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                        )),
+                  ),
+                  const TitleWidget(),
+                  Builder(
+                    builder: (context) {
+                      switch (controller.state) {
+                        case GazeTrackerState.first:
+                          return const CameraHandleWidget();
+                        case GazeTrackerState.idle:
+                          return const InitializingWidget();
+                        case GazeTrackerState.initialized:
+                          return const InitializedWidget();
+                        case GazeTrackerState.start:
+                        case GazeTrackerState.calibrating:
+                          return const TrackingModeWidget();
+                        default:
+                          return const InitializingWidget();
+                      }
                     },
-                    child: const Icon(
-                      Icons.menu,
-                      color: Colors.white,
-                    )),
+                  ),
+                ],
               ),
-              const TitleWidget(),
-              Expanded(
-                child: Stack(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Builder(
-                          builder: (context) {
-                            switch (controller.state) {
-                              case GazeTrackerState.first:
-                                return const CameraHandleWidget();
-                              case GazeTrackerState.idle:
-                                return const InitializingWidget();
-                              case GazeTrackerState.initialized:
-                                return const InitializedWidget();
-                              case GazeTrackerState.start:
-                              case GazeTrackerState.calibrating:
-                                return const TrackingModeWidget();
-                              default:
-                                return const InitializingWidget();
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                    if (controller.state == GazeTrackerState.start)
-                      const GazePointWidget(),
-                    if (controller.state == GazeTrackerState.initializing)
-                      const LoadingCircleWidget(),
-                    if (controller.state == GazeTrackerState.calibrating)
-                      const CalibrationWidget(),
-                    if (controller.failedReason != null)
-                      const InitializedFailDialog()
-                  ],
-                ),
-              ),
+               if (controller.state == GazeTrackerState.start)
+                        const GazePointWidget(),
+                      if (controller.state == GazeTrackerState.initializing)
+                        const LoadingCircleWidget(),
+                      if (controller.state == GazeTrackerState.calibrating)
+                        const CalibrationWidget(),
+                      if (controller.failedReason != null)
+                        const InitializedFailDialog()
             ],
           ),
         );

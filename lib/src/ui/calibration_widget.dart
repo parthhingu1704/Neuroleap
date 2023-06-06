@@ -12,20 +12,20 @@ class CalibrationWidget extends StatelessWidget {
     return GetBuilder<GazeTrackerProvider>(builder: (controller) {
       return Stack(
         children: <Widget>[
-          //   Center(
-          //       child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: const <Widget>[
-          //       Text('Look at the circle!',
-          //           style: TextStyle(
-          //               fontSize: 16,
-          //               color: Colors.white,
-          //               decoration: TextDecoration.none)),
-          //       SizedBox(
-          //         height: 80,
-          //       ),
-          //     ],
-          //   )),
+            Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const <Widget>[
+                Text('Look at the circle!',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        decoration: TextDecoration.none)),
+                SizedBox(
+                  height: 80,
+                ),
+              ],
+            )),
           Positioned(
             left: controller.caliX - 24,
             top: controller.caliY - 24,

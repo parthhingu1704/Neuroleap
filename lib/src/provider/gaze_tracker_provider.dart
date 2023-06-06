@@ -52,7 +52,7 @@ class GazeTrackerProvider extends GetxController {
         debugPrint('onCalibrationNext');
       } else if (call.method == "onCalibrationProgress") {
         _onCalibrationProgress(call.arguments);
-        debugPrint('onStatus');
+        debugPrint('onCalibrationProgress');
       } else if (call.method == "onCalibrationFinished") {
         _onCalibrationFinished();
         debugPrint('onCalibrationFinished');
@@ -115,18 +115,21 @@ class GazeTrackerProvider extends GetxController {
     }
     caliX = result[0];
     caliY = result[1];
-    _stateUpdate();
     _channel.invokeMethod(MethodString.startCollectSamples.convertedText);
+    _stateUpdate();
+
   }
 
   void _onCalibrationProgress(dynamic result) {
     progress = result[0];
     _stateUpdate();
+    print(progress);
   }
 
   void _onCalibrationFinished() {
     hasCaliData = true;
     _setTrackerState(GazeTrackerState.start);
+    _stateUpdate();
   }
 
   void _onGaze(double x, double y) {
@@ -200,7 +203,8 @@ class GazeTrackerProvider extends GetxController {
   void startCalibration() {
     _channel.invokeMethod(
         MethodString.startCalibration.convertedText, calibrationType);
-    _setTrackerState(GazeTrackerState.start);
+        _stateUpdate();
+    
   }
 
   void saveCalibrationData() {
