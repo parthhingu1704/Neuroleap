@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-// ignore: depend_on_referenced_packages
 import 'package:permission_handler/permission_handler.dart';
 import 'package:test_flutter/src/model/app_stage.dart';
 import 'package:test_flutter/src/model/gazetracker_method_string.dart';

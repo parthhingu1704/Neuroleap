@@ -28,20 +28,20 @@ class _DrawerPageState extends State<DrawerPage> {
               color: Theme.of(context).dividerColor,
               thickness: 1,
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const StartFocusTestCase(),
-                  ),
-                );
-              },
-              child: const Text(
-                'Test Case 1 (Eye Focus)',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => const StartFocusTestCase(),
+            //       ),
+            //     );
+            //   },
+            //   child: const Text(
+            //     'Test Case 1 (Eye Focus)',
+            //     style: TextStyle(fontSize: 16),
+            //   ),
+            // ),
             TextButton(
               onPressed: () {
                 Navigator.push(
@@ -51,7 +51,7 @@ class _DrawerPageState extends State<DrawerPage> {
                     ));
               },
               child: const Text(
-                'Test Case 2 (Blink)',
+                'Test Case 1 (Blink)',
                 style: TextStyle(fontSize: 16),
               ),
             ),
