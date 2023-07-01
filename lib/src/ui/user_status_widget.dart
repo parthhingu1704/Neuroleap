@@ -64,71 +64,77 @@ class _UserSatatusWidgetState extends State<UserSatatusWidget> {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                          left: 24.0, right: 24, bottom: 8, top: 16),
-                      child: Center(
-                        child: Text(
-                          "Please keep your eye into Circle and Blink every 5 second. ",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ),
-                    ),
+                    // const Padding(
+                    //   padding: EdgeInsets.only(
+                    //       left: 24.0, right: 24, bottom: 8, top: 16),
+                    //   child: Center(
+                    //     child: Text(
+                    //       "Please keep your eye into Circle and Blink every 5 second. ",
+                    //       textAlign: TextAlign.center,
+                    //       style: TextStyle(fontSize: 16, color: Colors.white),
+                    //     ),
+                    //   ),
+                    // ),
 
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 16.0, right: 16),
+                    //   child: Center(
+                    //     key: key,
+                    //     child: Builder(builder: (context) {
+                    //       RenderBox box = key.currentContext?.findRenderObject()
+                    //           as RenderBox;
+                    //       Offset position = box.localToGlobal(Offset.zero);
+                    //       y = position.dy;
+                    //       x = position.dx;
+
+                    //       userController.isInside(
+                    //           (x.toInt() + 400 / 2).toInt(),
+                    //           (y.toInt() + 400 / 2).toInt(),
+                    //           200,
+                    //           consumerdata.toInt(),
+                    //           consumerdatay.toInt(),
+                    //           context);
+                    //       return Container(
+                    //         height: 400,
+                    //         width: 400,
+                    //         decoration: const BoxDecoration(
+                    //           color: Colors.blue,
+                    //           shape: BoxShape.circle,
+                    //         ),
+                    //       );
+                    //     }),
+                    //   ),
+                    // ),
+
+                    // Padding(
+                    //   padding: const EdgeInsets.all(16.0),
+                    //   child: Center(
+                    //     child: Text(
+                    //       userController.timeString,
+                    //       style: const TextStyle(
+                    //         fontSize: 20,
+                    //         color: Colors.white,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16),
-                      child: Center(
-                        key: key,
-                        child: Builder(builder: (context) {
-                          RenderBox box = key.currentContext?.findRenderObject()
-                              as RenderBox;
-                          Offset position = box.localToGlobal(Offset.zero);
-                          y = position.dy;
-                          x = position.dx;
-
-                          userController.isInside(
-                              (x.toInt() + 400 / 2).toInt(),
-                              (y.toInt() + 400 / 2).toInt(),
-                              200,
-                              consumerdata.toInt(),
-                              consumerdatay.toInt(),
-                              context);
-                          return Container(
-                            height: 400,
-                            width: 400,
-                            decoration: const BoxDecoration(
-                              color: Colors.blue,
-                              shape: BoxShape.circle,
+                      padding: const EdgeInsets.all(16.0),
+                      child: Builder(builder: (context) {
+                        userController.isInside();
+                        return Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Center(
+                            child: Text(
+                              'Count :- ${userController.counterAdd}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
                             ),
-                          );
-                        }),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Text(
-                          userController.timeString,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
                           ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Text(
-                          'Count :- ${userController.counterAdd}',
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                        );
+                      }),
                     ),
                     //   Container(
                     //     height: 1,
