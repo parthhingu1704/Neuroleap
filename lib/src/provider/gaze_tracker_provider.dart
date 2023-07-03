@@ -117,7 +117,6 @@ class GazeTrackerProvider extends GetxController {
     caliY = result[1];
     _channel.invokeMethod(MethodString.startCollectSamples.convertedText);
     _stateUpdate();
-
   }
 
   void _onCalibrationProgress(dynamic result) {
@@ -203,8 +202,7 @@ class GazeTrackerProvider extends GetxController {
   void startCalibration() {
     _channel.invokeMethod(
         MethodString.startCalibration.convertedText, calibrationType);
-        _stateUpdate();
-    
+    _stateUpdate();
   }
 
   void saveCalibrationData() {

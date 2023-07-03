@@ -15,21 +15,28 @@ class UserExtandProvider extends GetxController {
   final int timerMaxSeconds = 60;
   int currentSeconds = 0;
 
-  void isInside(
-      int circlex, int circley, int rad, int x, int y, BuildContext context) {
-    if ((x - circlex) * (x - circlex) + (y - circley) * (y - circley) <=
-        rad * rad) {
-      start();
-      if ((stopwatch.elapsed.inSeconds % 60) % 5 == 0) {
-        print('DONE');
-        final provider = Get.find<GazeTrackerProvider>();
-        // provider.isBlink ||
-        if (provider.isDrowsiness) {
-          counterAdd += 1;
-        }
-      }
-    } else {
-      stop();
+//   void isInside(
+//       int circlex, int circley, int rad, int x, int y, BuildContext context) {
+//     if ((x - circlex) * (x - circlex) + (y - circley) * (y - circley) <=
+//         rad * rad) {
+//       start();
+//       if ((stopwatch.elapsed.inSeconds % 60) % 5 == 0) {
+//         print('DONE');
+//         final provider = Get.find<GazeTrackerProvider>();
+//         // provider.isBlink ||
+//         if (provider.isDrowsiness) {
+//           counterAdd += 1;
+//         }
+//       }
+//     } else {
+//       stop();
+//     }
+//   }
+
+  void isInside() {
+    final provider = Get.find<GazeTrackerProvider>();
+    if (provider.isDrowsiness || provider.isBlink) {
+      counterAdd += 1;
     }
   }
 
