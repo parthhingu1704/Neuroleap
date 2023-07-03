@@ -7,8 +7,9 @@ import 'package:test_flutter/src/model/gazetracker_method_string.dart';
 
 class GazeTrackerProvider extends GetxController {
   dynamic state;
+  // dev_t7cgx69k5dukohxx6scw332y1f5tmqqzqib5jj50
   static const licenseKey =
-      'dev_f2y6mohfezaam7kjbpneu3njrufamzokqjub69an'; // Please enter the key value for development issued by the SeeSo.io
+      'dev_t7cgx69k5dukohxx6scw332y1f5tmqqzqib5jj50'; // Please enter the key value for development issued by the SeeSo.io
   final _channel = const MethodChannel('samples.flutter.dev/tracker');
   String? failedReason;
   // gaze X,Y
